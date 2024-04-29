@@ -9,7 +9,7 @@ import {
   StyleSheet,
 } from "react-native";
 import { fetchPokemons } from "../services/pokemonService";
-import { Pokemon, HomeScreenProps } from "../types";
+import { HomeScreenProps, Pokemon } from "../types";
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
@@ -17,6 +17,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     const loadPokemons = async () => {
       const newPokemons = await fetchPokemons(offset);
       setPokemons((prev) => [...prev, ...newPokemons]);
@@ -25,7 +26,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     loadPokemons();
   }, [offset]);
 
-  if (loading) {
+  if (loading && pokemons.length === 0) {
     return (
       <View style={styles.center}>
         <ActivityIndicator size="large" />
@@ -36,17 +37,28 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   return (
     <FlatList
       data={pokemons}
-      onEndReached={() => setOffset(offset + 20)}
-      onEndReachedThreshold={0.5}
       renderItem={({ item }) => (
         <TouchableOpacity
+          style={styles.card}
           onPress={() => navigation.navigate("Details", { pokemon: item })}
         >
-          <Text>{item.name}</Text>
           <Image source={{ uri: item.image }} style={styles.image} />
+          <Text style={styles.name}>{item.name}</Text>
         </TouchableOpacity>
       )}
-      keyExtractor={(item) => item.name}
+      keyExtractor={(item) => `${item.id}`}
+      numColumns={3}
+      columnWrapperStyle={styles.row}
+      contentContainerStyle={styles.list}
+      onEndReached={() => {
+        if (!loading) {
+          setOffset(pokemons.length);
+        }
+      }}
+      onEndReachedThreshold={0.5}
+      ListFooterComponent={() =>
+        loading ? <ActivityIndicator size="small" color="#0000ff" /> : null
+      }
     />
   );
 };
@@ -57,9 +69,36 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  image: {
+  list: {
+    paddingHorizontal: 10,
+    backgroundColor: "#f0f0f0",
+  },
+  row: {
+    flex: 1,
+    justifyContent: "space-around",
+  },
+  card: {
+    backgroundColor: "#ffffff",
+    alignItems: "center",
+    margin: 5,
+    borderRadius: 10,
+    overflow: "hidden",
+    elevation: 3, // Android
+    shadowOpacity: 0.1, // iOS
+    shadowRadius: 4,
+    shadowOffset: { height: 2, width: 0 },
     width: 100,
-    height: 100,
+    height: 140,
+  },
+  image: {
+    width: 80,
+    height: 80,
+    marginTop: 10,
+  },
+  name: {
+    fontSize: 12,
+    fontWeight: "bold",
+    marginBottom: 10,
   },
 });
 
