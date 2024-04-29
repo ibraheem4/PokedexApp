@@ -1,21 +1,52 @@
 import React from "react";
-import { View, Text, Button, Image, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  Button,
+  Image,
+  ScrollView,
+  StyleSheet,
+} from "react-native";
 import { DetailsScreenProps } from "../types";
 
 const DetailsScreen: React.FC<DetailsScreenProps> = ({ route, navigation }) => {
   const { pokemon } = route.params;
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Name: {pokemon.name}</Text>
-      <Text>Type: {pokemon.types.join(", ")}</Text>
-      <Image source={{ uri: pokemon.image }} style={styles.image} />
-      <Button title="Go back" onPress={() => navigation.goBack()} />
-    </View>
+    <ScrollView contentContainerStyle={styles.scrollView}>
+      <View style={styles.container}>
+        <Text style={styles.title}>Name: {pokemon.name}</Text>
+        <Image source={{ uri: pokemon.image }} style={styles.image} />
+        <Text style={styles.section}>Type: {pokemon.types.join(", ")}</Text>
+
+        <Text style={styles.section}>Abilities:</Text>
+        {pokemon.abilities.map((ability, index) => (
+          <Text key={index} style={styles.details}>
+            {ability.ability.name} (Hidden: {ability.is_hidden ? "Yes" : "No"})
+          </Text>
+        ))}
+
+        <Text style={styles.section}>Stats:</Text>
+        {pokemon.stats.map((stat, index) => (
+          <Text key={index} style={styles.details}>
+            {stat.stat.name}: {stat.base_stat}
+          </Text>
+        ))}
+
+        <Button
+          title="Go back"
+          onPress={() => navigation.goBack()}
+          color="#3b4cca"
+        />
+      </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
+  scrollView: {
+    flexGrow: 1,
+  },
   container: {
     padding: 20,
     alignItems: "center",
@@ -24,12 +55,22 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 10,
+    marginBottom: 20,
   },
   image: {
     width: 200,
     height: 200,
     marginBottom: 20,
+  },
+  section: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginTop: 10,
+    marginBottom: 5,
+  },
+  details: {
+    fontSize: 16,
+    marginBottom: 5,
   },
 });
 
