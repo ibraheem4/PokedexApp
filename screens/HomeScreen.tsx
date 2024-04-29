@@ -15,12 +15,10 @@ import { HomeScreenProps } from "../types";
 const getNumColumns = () => {
   const width = Dimensions.get("window").width;
   if (width > 1200) {
-    return 5;
-  } else if (width > 900) {
     return 4;
-  } else if (width > 600) {
+  } else if (width > 900) {
     return 3;
-  } else if (width > 400) {
+  } else if (width > 600) {
     return 2;
   } else {
     return 1;
