@@ -15,7 +15,7 @@ npx react-native init PokedexApp --template react-native-template-typescript
 Create and push to a private GitHub repository using the following commands:
 
 ```
-git init && mygit && git branch -M main && gh repo create --private --source=. --remote=upstream && gh repo set-default && git add --all && git commit -m "Initial commit" && git remote add origin git@github.com:ibraheem4/PokedexApp.git && git push -u origin main && gh browse
+git init && git config user.email 'ibraheem4@gmail.com' && git branch -M main && gh repo create --private --source=. --remote=upstream && gh repo set-default && git add --all && git commit -m "Initial commit" && git remote add origin git@github.com:ibraheem4/PokedexApp.git && git push -u origin main && gh browse
 ```
 
 ## Setup
