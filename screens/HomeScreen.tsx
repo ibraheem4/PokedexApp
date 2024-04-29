@@ -6,18 +6,20 @@ import {
   Image,
   View,
   ActivityIndicator,
+  StyleSheet,
 } from "react-native";
 import { fetchPokemons } from "../services/pokemonService";
+import { Pokemon, HomeScreenProps } from "../types";
 
-const HomeScreen = ({ navigation }) => {
-  const [pokemons, setPokemons] = useState([]);
+const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
+  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadPokemons = async () => {
       const newPokemons = await fetchPokemons(offset);
-      setPokemons([...pokemons, ...newPokemons]);
+      setPokemons((prev) => [...prev, ...newPokemons]);
       setLoading(false);
     };
     loadPokemons();
@@ -25,7 +27,7 @@ const HomeScreen = ({ navigation }) => {
 
   if (loading) {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+      <View style={styles.center}>
         <ActivityIndicator size="large" />
       </View>
     );
@@ -41,15 +43,24 @@ const HomeScreen = ({ navigation }) => {
           onPress={() => navigation.navigate("Details", { pokemon: item })}
         >
           <Text>{item.name}</Text>
-          <Image
-            source={{ uri: item.image }}
-            style={{ width: 100, height: 100 }}
-          />
+          <Image source={{ uri: item.image }} style={styles.image} />
         </TouchableOpacity>
       )}
       keyExtractor={(item) => item.name}
     />
   );
 };
+
+const styles = StyleSheet.create({
+  center: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  image: {
+    width: 100,
+    height: 100,
+  },
+});
 
 export default HomeScreen;
