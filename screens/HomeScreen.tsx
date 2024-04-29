@@ -7,9 +7,12 @@ import {
   View,
   ActivityIndicator,
   StyleSheet,
+  Dimensions,
 } from "react-native";
 import { fetchPokemons } from "../services/pokemonService";
 import { HomeScreenProps, Pokemon } from "../types";
+
+const screenWidth = Dimensions.get("window").width;
 
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
@@ -34,12 +37,15 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     );
   }
 
+  const numColumns = 3;
+  const size = screenWidth / numColumns;
+
   return (
     <FlatList
       data={pokemons}
       renderItem={({ item }) => (
         <TouchableOpacity
-          style={styles.card}
+          style={[styles.card, { width: size, height: size }]}
           onPress={() => navigation.navigate("Details", { pokemon: item })}
         >
           <Image source={{ uri: item.image }} style={styles.image} />
@@ -47,7 +53,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
         </TouchableOpacity>
       )}
       keyExtractor={(item) => `${item.id}`}
-      numColumns={3}
+      numColumns={numColumns}
       columnWrapperStyle={styles.row}
       contentContainerStyle={styles.list}
       onEndReached={() => {
@@ -87,16 +93,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1, // iOS
     shadowRadius: 4,
     shadowOffset: { height: 2, width: 0 },
-    width: 100,
-    height: 140,
   },
   image: {
-    width: 80,
-    height: 80,
+    width: "80%",
+    height: "70%",
     marginTop: 10,
   },
   name: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: "bold",
     marginBottom: 10,
   },
