@@ -38,9 +38,6 @@ export interface DetailsScreenProps {
       pokemon: Pokemon;
     };
   };
-  navigation: {
-    goBack: () => void;
-  };
 }
 
 export interface HomeScreenProps {

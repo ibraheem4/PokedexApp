@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { DetailsScreenProps } from "../types";
 
-const DetailsScreen: React.FC<DetailsScreenProps> = ({ route, navigation }) => {
+const DetailsScreen: React.FC<DetailsScreenProps> = ({ route }) => {
   const { pokemon } = route.params;
 
   return (
@@ -32,12 +32,6 @@ const DetailsScreen: React.FC<DetailsScreenProps> = ({ route, navigation }) => {
             {stat.stat.name}: {stat.base_stat}
           </Text>
         ))}
-
-        <Button
-          title="Go back"
-          onPress={() => navigation.goBack()}
-          color="#3b4cca"
-        />
       </View>
     </ScrollView>
   );
