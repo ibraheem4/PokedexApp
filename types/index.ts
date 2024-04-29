@@ -48,3 +48,10 @@ export interface HomeScreenProps {
     navigate: (screen: string, params: { pokemon: Pokemon }) => void;
   };
 }
+
+export type RootStackParamList = {
+  Home: undefined;
+  Details: {
+    pokemon: Pokemon;
+  };
+};

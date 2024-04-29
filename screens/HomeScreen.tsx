@@ -10,6 +10,7 @@ import {
   Dimensions,
 } from "react-native";
 import { fetchPokemons } from "../services/pokemonService";
+import { HomeScreenProps } from "../types";
 
 const getNumColumns = () => {
   const width = Dimensions.get("window").width;
@@ -26,7 +27,7 @@ const getNumColumns = () => {
   }
 };
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const [pokemons, setPokemons] = useState([]);
   const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(true);
