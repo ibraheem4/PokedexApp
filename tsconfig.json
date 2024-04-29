@@ -6,7 +6,8 @@
     "paths": {
       "*": ["*", "screens/*", "services/*"]
     },
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "jsx": "react-native"
   },
   "include": [
     "**/*.ts",
