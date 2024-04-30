@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { fetchPokemons } from "../services/pokemonService";
 import { HomeScreenProps } from "../types";
+import ImageColors from "react-native-image-colors";
 
 const getNumColumns = () => {
   const width = Dimensions.get("window").width;
@@ -39,19 +40,23 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
         setNumColumns(newColumns);
       }
     };
-    Dimensions.addEventListener("change", onChange);
-    return () => Dimensions.removeEventListener("change", onChange);
+    const subscription = Dimensions.addEventListener("change", onChange);
+    return () => subscription.remove();
   }, [numColumns]);
 
   useEffect(() => {
     const loadPokemons = async () => {
       try {
         const newPokemons = await fetchPokemons(offset);
-        if (newPokemons) {
-          setPokemons((prev) => [...prev, ...newPokemons]);
-        } else {
-          setError("Failed to fetch pokemons");
-        }
+        const pokemonWithColors = await Promise.all(
+          newPokemons.map(async (pokemon) => {
+            const colors = await ImageColors.getColors(pokemon.image, {
+              fallback: "#FFFFFF",
+            });
+            return { ...pokemon, bgColor: colors.muted || "#FFFFFF" };
+          })
+        );
+        setPokemons((prev) => [...prev, ...pokemonWithColors]);
       } catch (error) {
         console.error("Failed to load pokemons:", error);
         setError("Error loading pokemons");
@@ -83,12 +88,17 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     <FlatList
       data={pokemons}
       renderItem={({ item }) => (
-        <View style={[styles.card, { width: `${100 / numColumns}%` }]}>
+        <View
+          style={[
+            styles.card,
+            { backgroundColor: item.bgColor, width: `${100 / numColumns}%` },
+          ]}
+        >
           <TouchableOpacity
             onPress={() => navigation.navigate("Details", { pokemon: item })}
           >
             <Image source={{ uri: item.image }} style={styles.image} />
-            <Text style={styles.name}>{item.name}</Text>{" "}
+            <Text style={styles.name}>{item.name}</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -105,7 +115,6 @@ const styles = StyleSheet.create({
   card: {
     flex: 1,
     margin: 5,
-    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
     padding: 10,
