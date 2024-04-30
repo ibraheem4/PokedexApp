@@ -99,6 +99,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
           >
             <Image source={{ uri: item.image }} style={styles.image} />
             <Text style={styles.name}>{item.name}</Text>
+            <Text style={styles.id}>{item.id.toString().padStart(3, "0")}</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -115,6 +116,7 @@ const styles = StyleSheet.create({
   card: {
     flex: 1,
     margin: 5,
+    backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
     padding: 10,
@@ -127,6 +129,10 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 16,
     fontWeight: "bold",
+    textAlign: "center",
+  },
+  id: {
+    fontSize: 14,
     textAlign: "center",
   },
   centered: {
