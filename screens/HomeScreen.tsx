@@ -88,7 +88,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
             onPress={() => navigation.navigate("Details", { pokemon: item })}
           >
             <Image source={{ uri: item.image }} style={styles.image} />
-            <Text style={styles.name}>{item.name}</Text>
+            <Text style={styles.name}>{item.name}</Text>{" "}
           </TouchableOpacity>
         </View>
       )}
@@ -116,6 +116,9 @@ const styles = StyleSheet.create({
   },
   name: {
     marginTop: 10,
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
   },
   centered: {
     flex: 1,
