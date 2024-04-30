@@ -2,6 +2,8 @@
 
 This React Native app serves as a Pokedex, fetching data from the [PokéAPI](https://pokeapi.co) to display [Pokémon](https://www.pokemon.com/us/pokedex) and their details, including images and types. It features a home screen with an infinite scroll list of Pokémon and a detail screen for each Pokémon.
 
+![chrome-capture-pokedexapp](chrome-capture-pokedexapp-2024-4-30.gif)
+
 ## Initial Project Setup
 
 Create a new React Native project using the following command:
