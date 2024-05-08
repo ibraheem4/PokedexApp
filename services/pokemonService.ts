@@ -1,12 +1,17 @@
+// Import axios for HTTP requests
 import axios from "axios";
 
+// Base URL for the PokeAPI
 const BASE_URL = "https://pokeapi.co/api/v2";
 
+// Function to fetch Pokemons with pagination
 export const fetchPokemons = async (offset: number, limit: number = 20) => {
   try {
+    // Make an HTTP GET request to fetch Pokemons
     const response = await axios.get(
       `${BASE_URL}/pokemon?offset=${offset}&limit=${limit}`
     );
+    // Transform the fetched data into a more usable format
     const pokemonsWithDetails = response.data.results.map(async (pokemon) => {
       const pokemonDetails = await axios.get(pokemon.url);
       return transformPokemonDetails(pokemonDetails.data);
@@ -18,6 +23,7 @@ export const fetchPokemons = async (offset: number, limit: number = 20) => {
   }
 };
 
+// Function to transform raw Pokemon data into a structured format
 const transformPokemonDetails = (details) => {
   return {
     id: details.id,

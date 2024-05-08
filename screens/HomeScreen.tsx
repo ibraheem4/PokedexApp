@@ -9,10 +9,14 @@ import {
   StyleSheet,
   Dimensions,
 } from "react-native";
+// Import utility to fetch Pokemon data
 import { fetchPokemons } from "../services/pokemonService";
+// Import custom TypeScript types
 import { HomeScreenProps } from "../types";
+// Import third-party library for extracting colors from images
 import ImageColors from "react-native-image-colors";
 
+// Function to determine number of columns based on screen width
 const getNumColumns = () => {
   const width = Dimensions.get("window").width;
   if (width > 1200) {
@@ -26,13 +30,16 @@ const getNumColumns = () => {
   }
 };
 
+// Define the HomeScreen component as a functional component with typed props
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
+  // State hooks for managing Pokemons, loading state, error state, and number of columns
   const [pokemons, setPokemons] = useState([]);
   const [offset, setOffset] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [numColumns, setNumColumns] = useState(getNumColumns());
 
+  // Effect hook to handle screen resizing
   useEffect(() => {
     const onChange = () => {
       const newColumns = getNumColumns();
@@ -44,6 +51,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     return () => subscription.remove();
   }, [numColumns]);
 
+  // Effect hook to load Pokemons from the API
   useEffect(() => {
     const loadPokemons = async () => {
       try {
@@ -68,6 +76,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     loadPokemons();
   }, [offset]);
 
+  // Render error message if there is an error
   if (error) {
     return (
       <View style={styles.centered}>
@@ -76,6 +85,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     );
   }
 
+  // Display loading indicator while data is being fetched
   if (loading) {
     return (
       <View style={styles.centered}>
@@ -84,6 +94,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
     );
   }
 
+  // Render the list of Pokemons in a grid
   return (
     <FlatList
       data={pokemons}
@@ -112,6 +123,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   );
 };
 
+// Stylesheet for the HomeScreen
 const styles = StyleSheet.create({
   card: {
     flex: 1,

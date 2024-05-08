@@ -7,25 +7,32 @@ import {
   ScrollView,
   StyleSheet,
 } from "react-native";
+// Import custom TypeScript types
 import { DetailsScreenProps } from "../types";
 
+// Define the DetailsScreen component as a functional component with typed props
 const DetailsScreen: React.FC<DetailsScreenProps> = ({ route }) => {
+  // Extract the pokemon object from route parameters
   const { pokemon } = route.params;
 
+  // Render the UI elements for the Pokemon details screen within a ScrollView
   return (
     <ScrollView contentContainerStyle={styles.scrollView}>
       <View style={styles.container}>
+        // Display the name of the pokemon
         <Text style={styles.title}>Name: {pokemon.name}</Text>
+        // Display the image of the pokemon
         <Image source={{ uri: pokemon.image }} style={styles.image} />
+        // List the types of the pokemon
         <Text style={styles.section}>Type: {pokemon.types.join(", ")}</Text>
-
+        // List the abilities of the pokemon
         <Text style={styles.section}>Abilities:</Text>
         {pokemon.abilities.map((ability, index) => (
           <Text key={index} style={styles.details}>
             {ability.ability.name} (Hidden: {ability.is_hidden ? "Yes" : "No"})
           </Text>
         ))}
-
+        // List the stats of the pokemon
         <Text style={styles.section}>Stats:</Text>
         {pokemon.stats.map((stat, index) => (
           <Text key={index} style={styles.details}>
@@ -37,6 +44,7 @@ const DetailsScreen: React.FC<DetailsScreenProps> = ({ route }) => {
   );
 };
 
+// Stylesheet for the DetailsScreen
 const styles = StyleSheet.create({
   scrollView: {
     flexGrow: 1,
